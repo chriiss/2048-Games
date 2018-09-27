@@ -1,0 +1,126 @@
+p{
+  color: #000;
+}
+
+h1{
+  text-align: center;
+  font-family: 'Gloria Hallelujah', cursive;
+}
+canvas{
+  -moz-animation: changeBackground 10s infinite;
+  -webkit-animation: changeBackground 10s infinite; 
+  display: table;
+  margin:0 auto;
+  margin-top: 5px;
+}
+#gameOver{
+  text-align: center;
+  margin-top: -15px;
+  font-size: 25px;
+  font-family: 'Gloria Hallelujah', cursive;
+}
+body {
+  background: #A9A9F5;
+  overflow-y: hidden;
+}
+
+@keyframes changeBackground
+{
+  0%   {background: #F5D0A9;}
+  25%  {background: #F2F5A9;}
+  50%  {background: #BCF5A9;}
+  75%  {background: #A9F5F2;}
+  100% {background: #A9A9F5;}
+}
+
+.container{
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+  padding-left: 20%;
+  padding-right: 20%;
+}
+#button{
+  height:45px;
+  width: 15%;
+  border: 1px solid #fff;
+  background-color: #A9A9F5;
+  color: #fff;
+  border-radius: 10px;
+  font-family: 'Gloria Hallelujah', cursive;
+  cursor:pointer;
+  margin-left: 80px;
+  margin-top: 10px;
+}
+#playerScore{
+  text-align: center;
+  font-family: 'Gloria Hallelujah', cursive;
+  font-size: 20px;
+  padding-left: 10px;
+}
+#record{
+  text-align: center;
+  font-family: 'Gloria Hallelujah', cursive;
+  font-size: 18px;
+  background-color: #A4A4A4;
+  border-radius: 5px;
+  color: #fff;
+  width: 30%;
+  margin-left: 80px;
+}
+#titleArrow{
+  text-align: center;
+  margin-top: 15px;
+  font-size: 17px;
+  font-family: 'Gloria Hallelujah', cursive;
+}
+#up{
+ width: 0px; 
+ height: 0px; 
+ border-left: 30px solid transparent;
+ border-right: 30px solid transparent;
+ border-bottom: 30px solid #000;
+ display: table;
+ margin:0 auto;
+ cursor: pointer;
+ margin-top: -15px;
+}
+#left{
+  width: 0px; 
+  height: 0px; 
+  border-top: 30px solid transparent;
+  border-bottom: 30px solid transparent; 
+  border-right:30px solid #000; 
+  margin-left: 508px;
+  margin-top: -280px;
+  cursor: pointer;
+}
+#right{
+  width: 0px; 
+  height: 0px; 
+  border-top: 30px solid transparent;
+  border-bottom: 30px solid transparent;
+  border-left: 30px solid #000;
+  margin-left: 982px;
+  margin-top: -59px;
+  cursor: pointer;
+}
+#down{
+ width: 0px; 
+ height: 0px; 
+ border-left: 30px solid transparent;
+ border-right: 30px solid transparent;
+ border-top: 30px solid #000;
+ display: table;
+ margin:0 auto;
+ margin-top: 5px;
+ cursor: pointer;
+}
+#size{
+  background: none;
+  width: 10%;
+  border:1px solid #fff;
+  color: #fff;
+  display: table;
+  margin:0 auto;
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>2048</title>
+    <link href="style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <h1>2048</h1>
+    <select id="size">
+        <option value="4">4x4</option>
+        <option value="5">5x5</option>
+        <option value="6">6x6</option>
+    </select>
+    <div class="container">
+        <p id="playerScore"></p>
+        <p id="record"></p>
+        <button type="button" id="button">Nouveau jeu</button>
+    </div>
+    
+    <p id="gameOver"></p>
+    <div id="up"></div>
+    <canvas width="430" height="430"></canvas>
+    <div id="down"></div>   
+    <div id="left"></div>
+    <div id="right"></div>         
+</body>
+</html>
