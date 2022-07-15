@@ -1,334 +1,335 @@
-window.onload = function(){
+const element = document.querySelector("canvas");
+const ctx = element.getContext('2d');
 
-    var element = document.querySelector("canvas");
-    var ctx = element.getContext('2d');
+const playerScoreText = document.querySelector(".player-score");
+const gameOver = document.querySelector(".game-over");
+const sizeInput = document.querySelector(".size");
+const changeSize = document.querySelector(".change-size");
+const recordBis = document.querySelector(".player-record");
+const newGame = document.querySelector('.btn-new-game');
 
-    var playerScoreAffich = document.getElementById("playerScore");
-    var gameOver = document.getElementById("gameOver");
-    var sizeInput = document.getElementById("size");
-    var changeSize = document.getElementById("change-size");
+let playerScore = 0;
+let record = 0;
+let size = 4;
+let width = element.width / size - 7;
 
-    var playerScore = 0;
-    var record = 0;
-    var recordBis = document.getElementById("record");
-    var taille = 4;
-    var width = element.width / taille -7;
+let cellArray = [];
+let keyPress = true;
 
-    var cellules = [];
-    var tailles;
-    var keyPress = true;
-
-    var moveRight;
-    var moveLeft;
-    var moveUp;
-    var moveDown;
+let sizes;
+let moveRight;
+let moveLeft;
+let moveUp;
+let moveDown;
 
 
-    startDuGame();
+startGame();
 
-    size.onchange = function() {
-        if(sizeInput.value >= 4 && sizeInput.value <= 6) {
-            taille = sizeInput.value;
-            width = element.width / taille - 6;
-            ctx.clearRect(0, 0, 430, 430);
-            playerScore = 0;
-            startDuGame();
+sizeInput.onchange = () => {
+    if (sizeInput.value >= 4 && sizeInput.value <= 6) {
+        size = sizeInput.value;
+        width = element.width / size - 6;
+        ctx.clearRect(0, 0, 430, 430);
+        playerScore = 0;
+        startGame();
+    }
+}
+
+function cell(row, col) {
+    this.value = 0;
+    this.x = col * width + 5 * (col + 1);
+    this.y = row * width + 5 * (row + 1);
+}
+
+function createCell() {
+    for (let i = 0; i < size; i++) {
+        cellArray[i] = [];
+        for (let j = 0; j < size; j++) {
+            cellArray[i][j] = new cell(i, j);
         }
     }
-    function cell(row, col) {
-        this.value = 0;
-        this.x = col * width + 5 * (col + 1);
-        this.y = row * width + 5 * (row + 1);
+}
+
+function createCellBis(cell) {
+    ctx.beginPath();
+    ctx.rect(cell.x, cell.y, width, width);
+
+    switch (cell.value) {
+        case 0:
+            ctx.fillStyle = "rgb(66, 66, 64)";
+            break;
+        case 2:
+            ctx.fillStyle = "rgb(246, 215, 100)";
+            break;
+        case 4:
+            ctx.fillStyle = "rgb(149, 246, 100)";
+            break;
+        case 8:
+            ctx.fillStyle = "rgb(100, 229, 246)";
+            break;
+        case 16:
+            ctx.fillStyle = "rgb(140, 100, 246)";
+            break;
+        case 32:
+            ctx.fillStyle = "rgb(215, 171, 11)";
+            break;
+        case 64:
+            ctx.fillStyle = "rgb(215, 11, 11)";
+            break;
+        case 128:
+            ctx.fillStyle = "rgb(43, 145, 251";
+            break;
+        case 256:
+            ctx.fillStyle = "rgb(235, 150, 235)";
+            break;
+        case 512:
+            ctx.fillStyle = "rgb(1, 251, 105";
+            break;
+        case 1024:
+            ctx.fillStyle = "rgb(143, 202, 200)";
+            break;
+        case 2048:
+            ctx.fillStyle = "rgb(225, 224, 0)";
+            break;
+        case 4096:
+            ctx.fillStyle = "rgb(152, 103, 229)";
+            break;
     }
 
-    function createCellules() {
-        for (var i = 0; i < taille; i++) {
-            cellules[i] = [];
-            for (var j = 0; j < taille; j++) {
-                cellules[i][j] = new cell(i, j);
-            }
+    ctx.fill();
+
+    if (cell.value) {
+        sizes = width / 2;
+        sizeWidth = width / 7;
+        ctx.font = sizes + "px 'Roboto', sans-serif";
+        ctx.fillStyle = 'rgb(66, 66, 64)';
+        ctx.textAlign = "center";
+        ctx.fillText(cell.value, cell.x + sizes, cell.y + sizes + sizeWidth);
+    }
+}
+
+function createAllCell() {
+    for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+            createCellBis(cellArray[i][j]);
         }
     }
+}
 
-    function createCelluleBis(cell) {
-        ctx.beginPath();
-        ctx.rect(cell.x, cell.y, width, width);
+function startGame() {
+    createCell();
+    createAllCell();
+    addNewCell();
+    addNewCell();
+    startRecord();
+    funcRecord();
+}
 
-        switch (cell.value){
-            case 0 : ctx.fillStyle = "rgb(66, 66, 64)"; break;
-            case 2 : ctx.fillStyle = "rgb(246, 215, 100)"; break;
-            case 4 : ctx.fillStyle = "rgb(149, 246, 100)"; break;
-            case 8 : ctx.fillStyle = "rgb(100, 229, 246)"; break;
-            case 16 : ctx.fillStyle = "rgb(140, 100, 246)"; break;
-            case 32 : ctx.fillStyle = "rgb(215, 171, 11)"; break;
-            case 64 : ctx.fillStyle = "rgb(215, 11, 11)"; break;
-            case 128 : ctx.fillStyle = "rgb(43, 145, 251"; break;
-            case 256 : ctx.fillStyle = "rgb(235, 150, 235)"; break;
-            case 512 : ctx.fillStyle = "rgb(1, 251, 105"; break;
-            case 1024 : ctx.fillStyle = "rgb(143, 202, 200)"; break;
-            case 2048 : ctx.fillStyle = "rgb(225, 224, 0)"; break;
-            case 4096 : ctx.fillStyle = "rgb(152, 103, 229)"; break;
+function createCookie(cname, cvalue, exdays) {
+    let d = new Date();
+    d.setTime(d.getTime() + (exdays + 1000 * 60 * 60 * 24 * 365));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires + "; path=/";
+}
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
         }
-
-        ctx.fill();
-
-        if(cell.value) {
-            tailles = width /2;
-            tailleWidth = width/7;
-            ctx.font = tailles + "px 'Roboto', sans-serif";
-            ctx.fillStyle = 'rgb(66, 66, 64)';
-            ctx.textAlign = "center";
-            ctx.fillText(cell.value, cell.x + tailles, cell.y + tailles + tailleWidth);
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
         }
     }
-    
-    function startDuGame() {  
-      createCellules();
-      createAllCellules();
-      ajoutNewCellule();
-      ajoutNewCellule();
-      funcStartRecord();
-      funcRecord();
-    }
-    function createAllCellules() {
-        for (var i = 0; i < taille; i++) {
-            for (var j = 0; j < taille; j++) {
-                createCelluleBis(cellules[i][j]);
-            }
-        }
-    }
-    function createCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays+1000*60*60*24*365));
-        var expires = "expires="+ d.toUTCString();
-        document.cookie = cname + "=" + cvalue + "; " + expires + "; path=/";
-    }
+    return "";
+}
 
-    function getCookie(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        for(var i = 0; i <ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    } 
-
-    function funcRecord(){
-        if(playerScore > record)
-        {
-            console.log(document.cookie);
-            record = playerScore;
-            console.log(record);
-            createCookie("record", record, 1);
-            value = getCookie("record");
-             console.log(value);
-            console.log(getCookie("record"));
-            recordBis.innerHTML = "Meilleur score : " + value;   
-        }
+function funcRecord() {
+    if (playerScore > record) {
+        record = playerScore;
+        createCookie("record", record, 1);
+        value = getCookie("record");
+        recordBis.innerHTML = "Meilleur score : " + value;
     }
-    function funcStartRecord()
-    {
-        var value = getCookie("record");
-        record = value;
-        recordBis.innerHTML = "Meilleur score : " + value;   
-    }
+}
 
-    function ajoutNewCellule() {
-      var varAjout = 0;
-        for (var i = 0; i < taille; i++) {
-            for (var j = 0; j < taille; j++) {
-                if (!cellules[i][j].value) {
-                    varAjout++;
-                }
-                else{
-                    if(playerScore > record){
-                        funcRecord();
-                    }
-                }
-            }
-        }
-        if(varAjout === 0){
-            return;   
-        }
-        while(true){
-            var row = Math.floor(Math.random() * taille);
-            var col = Math.floor(Math.random() * taille);
-            if(!cellules[row][col].value) {
-                cellules[row][col].value = 2 * Math.ceil(Math.random() * 2);
-                createAllCellules();
-                return true;
-            }
-        }
-    }
+function startRecord() {
+    let value = getCookie("record");
+    record = value;
+    recordBis.innerHTML = "Meilleur score : " + value;
+}
 
-    document.onkeydown = function(e) {
-        if(keyPress){
-            if (e.keyCode == 37) onMoveLeft();
-            else if (e.keyCode == 38) onMoveUp();
-            else if (e.keyCode == 39) onMoveRight();
-            else if (e.keyCode == 40) onMoveDown();
-            playerScoreAffich.innerHTML = "Score : " + playerScore;
-        }
-    }
-
-    function onMoveRight() {
-        moveRight = false;
-        for (var i = 0; i < taille; i++) {
-            for (var j = taille - 2; j >= 0; j--) {
-                if (cellules[i][j].value) {
-                    var col = j;
-                    while (col + 1 < taille) {
-                        if (!cellules[i][col + 1].value) {
-                            cellules[i][col + 1].value = cellules[i][col].value;
-                            cellules[i][col].value = 0;
-                            col++;
-                            moveRight = true;
-                        }
-                        else if (cellules[i][col].value == cellules[i][col + 1].value) {
-                            cellules[i][col + 1].value *= 2;
-                            playerScore +=  cellules[i][col + 1].value;
-                            cellules[i][col].value = 0;
-                            col++;
-                            moveRight = true;
-                            break;
-                        }
-                        else break;
-                    }
+function addNewCell() {
+    let add = 0;
+    for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+            if (!cellArray[i][j].value) {
+                add++;
+            } else {
+                if (playerScore > record) {
+                    funcRecord();
                 }
             }
         }
-        if(moveRight === true)
-        ajoutNewCellule();        
     }
+    if (add === 0) return;
 
-    function onMoveLeft() {
-        moveLeft = false;
-        for (var i = 0; i < taille; i++) {
-            for (var j = 1; j < taille; j++) {
-              if (cellules[i][j].value) {
-                    var col = j;
-                    while (col - 1 >= 0) {
-                        if (!cellules[i][col - 1].value) {
-                            cellules[i][col - 1].value = cellules[i][col].value;
-                            cellules[i][col].value = 0;
-                            col--;
-                            moveLeft = true;
-                        }
-                        else if (cellules[i][col].value == cellules[i][col - 1].value) {
-                            cellules[i][col - 1].value *= 2;
-                            playerScore +=   cellules[i][col - 1].value;
-                            cellules[i][col].value = 0;
-                            moveLeft = true;
-                            break;
-                        }
-                        else break;
-                    }
+    while (true) {
+        let row = Math.floor(Math.random() * size);
+        let col = Math.floor(Math.random() * size);
+        if (!cellArray[row][col].value) {
+            cellArray[row][col].value = 2 * Math.ceil(Math.random() * 2);
+            createAllCell();
+            return true;
+        }
+    }
+}
+
+document.onkeydown = (e) => {
+    if (keyPress) {
+        if (e.keyCode == 37) onMoveLeft();
+        else if (e.keyCode == 38) onMoveUp();
+        else if (e.keyCode == 39) onMoveRight();
+        else if (e.keyCode == 40) onMoveDown();
+        playerScoreText.innerHTML = "Score : " + playerScore;
+    }
+}
+
+function onMoveRight() {
+    moveRight = false;
+    for (let i = 0; i < size; i++) {
+        for (let j = size - 2; j >= 0; j--) {
+            if (cellArray[i][j].value) {
+                let col = j;
+                while (col + 1 < size) {
+                    if (!cellArray[i][col + 1].value) {
+                        cellArray[i][col + 1].value = cellArray[i][col].value;
+                        cellArray[i][col].value = 0;
+                        col++;
+                        moveRight = true;
+                    } else if (cellArray[i][col].value == cellArray[i][col + 1].value) {
+                        cellArray[i][col + 1].value *= 2;
+                        playerScore += cellArray[i][col + 1].value;
+                        cellArray[i][col].value = 0;
+                        col++;
+                        moveRight = true;
+                        break;
+                    } else break;
                 }
             }
         }
-        if(moveLeft === true)
-        ajoutNewCellule();
     }
+    if (moveRight === true) addNewCell();
+}
 
-    function onMoveUp() {
-        moveUp = false;
-        for (var j = 0; j < taille; j++) {
-            for (var i = 1; i < taille; i++) {
-                if (cellules[i][j].value) {
-                    var row = i;
-                    while (row > 0) {
-                        if (!cellules[row - 1][j].value) {
-                            cellules[row - 1][j].value = cellules[row][j].value;
-                            cellules[row][j].value = 0;
-                            row--;
-                            moveUp = true;
-                        }   
-                        else if (cellules[row][j].value == cellules[row - 1][j].value) {
-                            cellules[row - 1][j].value *= 2;
-                            playerScore +=  cellules[row - 1][j].value;
-                            cellules[row][j].value = 0;
-                            moveUp = true;
-                            break;
-                        }
-                        else break;
-                    }
+function onMoveLeft() {
+    moveLeft = false;
+    for (let i = 0; i < size; i++) {
+        for (let j = 1; j < size; j++) {
+            if (cellArray[i][j].value) {
+                let col = j;
+                while (col - 1 >= 0) {
+                    if (!cellArray[i][col - 1].value) {
+                        cellArray[i][col - 1].value = cellArray[i][col].value;
+                        cellArray[i][col].value = 0;
+                        col--;
+                        moveLeft = true;
+                    } else if (cellArray[i][col].value == cellArray[i][col - 1].value) {
+                        cellArray[i][col - 1].value *= 2;
+                        playerScore += cellArray[i][col - 1].value;
+                        cellArray[i][col].value = 0;
+                        moveLeft = true;
+                        break;
+                    } else break;
                 }
             }
         }
-        if(moveUp === true)
-        ajoutNewCellule();
     }
+    if (moveLeft === true)
+        addNewCell();
+}
 
-    function onMoveDown() {
-        moveDown = false;
-        for (var j = 0; j < taille; j++) {
-            for (var i = taille - 2; i >= 0; i--) {
-                if (cellules[i][j].value) {
-                    var row = i;
-                    while (row + 1 < taille) {
-                        if (!cellules[row + 1][j].value) {
-                            cellules[row + 1][j].value = cellules[row][j].value;
-                            cellules[row][j].value = 0;
-                            row++;
-                            moveDown = true;
-                        }
-                        else if (cellules[row][j].value == cellules[row + 1][j].value) {
-                            cellules[row + 1][j].value *= 2;
-                            playerScore +=  cellules[row + 1][j].value;
-                            cellules[row][j].value = 0;
-                            moveDown = true;
-                            break;
-                        }
-                        else break;
-                    }
+function onMoveUp() {
+    moveUp = false;
+    for (let j = 0; j < size; j++) {
+        for (let i = 1; i < size; i++) {
+            if (cellArray[i][j].value) {
+                let row = i;
+                while (row > 0) {
+                    if (!cellArray[row - 1][j].value) {
+                        cellArray[row - 1][j].value = cellArray[row][j].value;
+                        cellArray[row][j].value = 0;
+                        row--;
+                        moveUp = true;
+                    } else if (cellArray[row][j].value == cellArray[row - 1][j].value) {
+                        cellArray[row - 1][j].value *= 2;
+                        playerScore += cellArray[row - 1][j].value;
+                        cellArray[row][j].value = 0;
+                        moveUp = true;
+                        break;
+                    } else break;
                 }
             }
         }
-        if(moveDown === true)
-        ajoutNewCellule();
     }
-    $(function(){
-        $("#button").click(function(){
-            playerScore = 0;
-            $('#playerScore').text("Score : " + playerScore);
-            startDuGame();
-            if(playerScore > record){
-               funcRecord(); 
-            }     
-        }); 
-        $("canvas").hide();
-        $("canvas").fadeIn(6000);
-        
-        $("#left").click(function(){
-            onMoveLeft();
-            playerScoreAffich.innerHTML = "Score : " + playerScore;
-        });
-        $("#up").click(function(){
-            onMoveUp();
-            playerScoreAffich.innerHTML = "Score : " + playerScore;
-        });
-        $("#right").click(function(){
-            onMoveRight();
-            playerScoreAffich.innerHTML = "Score : " + playerScore;
-        });
-         $("#down").click(function(){
-            onMoveDown();
-            playerScoreAffich.innerHTML = "Score : " + playerScore;
-        });
+    if (moveUp === true)
+        addNewCell();
+}
 
-        $("#left").hide();
-        $("#left").fadeIn(6000);
-        $("#right").hide();
-        $("#right").fadeIn(6000);
-        $("#up").hide();
-        $("#up").fadeIn(6000);
-        $("#down").hide();
-        $("#down").fadeIn(6000);
+function onMoveDown() {
+    moveDown = false;
+    for (let j = 0; j < size; j++) {
+        for (let i = size - 2; i >= 0; i--) {
+            if (cellArray[i][j].value) {
+                let row = i;
+                while (row + 1 < size) {
+                    if (!cellArray[row + 1][j].value) {
+                        cellArray[row + 1][j].value = cellArray[row][j].value;
+                        cellArray[row][j].value = 0;
+                        row++;
+                        moveDown = true;
+                    } else if (cellArray[row][j].value == cellArray[row + 1][j].value) {
+                        cellArray[row + 1][j].value *= 2;
+                        playerScore += cellArray[row + 1][j].value;
+                        cellArray[row][j].value = 0;
+                        moveDown = true;
+                        break;
+                    } else break;
+                }
+            }
+        }
+    }
+    if (moveDown === true)
+        addNewCell();
+}
+
+function arrowDir() {
+    document.querySelector(".dir-left").addEventListener("click", () => {
+        onMoveLeft();
+        playerScoreText.innerHTML = "Score : " + playerScore;
+    });
+    document.querySelector(".dir-up").addEventListener("click", () => {
+        onMoveUp();
+        playerScoreText.innerHTML = "Score : " + playerScore;
+    });
+    document.querySelector(".dir-right").addEventListener("click", () => {
+        onMoveRight();
+        playerScoreText.innerHTML = "Score : " + playerScore;
+    });
+    document.querySelector(".dir-down").addEventListener("click", () => {
+        onMoveDown();
+        playerScoreText.innerHTML = "Score : " + playerScore;
     });
 }
+
+arrowDir();
+
+newGame.addEventListener("click", () => {
+    playerScore = 0;
+    playerScoreText.innerHTML = "Score: " + playerScore;
+    startGame();
+    if (playerScore > record) funcRecord();
+})

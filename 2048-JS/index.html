@@ -1,32 +1,48 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>2048</title>
     <link href="style.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="script.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
 </head>
 <body>
-    <h1>2048</h1>
-    <select id="size">
-        <option value="4">4x4</option>
-        <option value="5">5x5</option>
-        <option value="6">6x6</option>
-    </select>
-    <div class="container">
-        <p id="playerScore"></p>
-        <p id="record"></p>
-        <button type="button" id="button">Nouveau jeu</button>
-    </div>
-    
-    <p id="gameOver"></p>
-    <div id="up"></div>
-    <canvas width="430" height="430"></canvas>
-    <div id="down"></div>   
-    <div id="left"></div>
-    <div id="right"></div>         
+    <header>
+        <h1>2048</h1>
+        <select class="size">
+            <option value="4">4x4</option>
+            <option value="5">5x5</option>
+            <option value="6">6x6</option>
+        </select>
+        <div class="container">
+            <p class="player-score"></p>
+            <p class="player-record"></p>
+            <button type="button" class="btn-new-game">New game</button>
+        </div>
+        <p class="game-over"></p>
+    </header>
+    <section>
+        <div class="horizontal-center">
+            <svg class="dir-up" viewBox="0 0 320 512" width="50" title="angle-up">
+                <path d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z" />
+            </svg>
+        </div>
+        <canvas width="420" height="420"></canvas>
+        <div class="horizontal-center">
+            <svg class="dir-down" viewBox="0 0 320 512" width="50" title="angle-down">
+                <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z" />
+            </svg>
+        </div>
+        <div class="vertical-center">
+            <svg class="dir-left" viewBox="0 0 256 512" width="50" title="angle-left">
+                <path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z" />
+            </svg>
+            <svg class="dir-right" viewBox="0 0 256 512" width="50" title="angle-right">
+                <path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z" />
+            </svg>
+        </div>
+    </section>
+    <script src="script.js" defer></script>
 </body>
 </html>
